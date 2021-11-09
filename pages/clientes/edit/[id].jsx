@@ -42,12 +42,10 @@ const Edit = ({ data }) => {
         onSubmit={async (valores) => {
           try {
             dispatch(uiUpdateClienteLoading());
-            await mainApi.put(`/clientes/${client.id}`, {
-              valores,
-            });
+            await mainApi.patch(`/clients/${client.id}`, valores);
             Swal.fire(
               "Editado correctamente",
-              "Cliente eliminado correctamente",
+              "Cliente editado correctamente",
               "success"
             );
             dispatch(uiUpdateClienteLoading());

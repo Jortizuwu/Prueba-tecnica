@@ -36,17 +36,24 @@ const CreateClient = () => {
       onSubmit: async (valores) => {
         try {
           dispatch(uiCreateClienteLoading());
-          await mainApi.post("/clients", valores);
+          const data = await mainApi.post("/clients", valores);
+          console.log(data);
+
+          if (data.data?.ok === false) {
+            Swal.fire("Error!", `${data.data.message}`, "error");
+            dispatch(uiCreateClienteLoading());
+            return;
+          }
           Swal.fire(
             "Creado!",
             "Nuevo cliente creado de forma correcta",
             "success"
           );
-          dispatch(uiCreateClienteLoading());
           dispatch(uiCreateNewCliente());
           setTimeout(() => {
             push("/clientes");
           }, 1500);
+          dispatch(uiCreateClienteLoading());
         } catch (error) {
           console.log(error.message);
           dispatch(uiCreateClienteLoading());
