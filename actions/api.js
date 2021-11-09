@@ -13,11 +13,15 @@ export const createAnewInvoices = (items, clientId) => {
         items,
         clientId,
       });
+      if (data.data.ok === true) {
+        Swal.fire("Creada!", "Nueva factura creada correctamente", "success");
+        dispatch(uiCreateInvoicesLoading());
+        dispatch(uiCreateNewInvoices());
+        dispatch(restValuesState());
+        return;
+      }
       console.log(data);
-      Swal.fire("Creada!", "Nueva factura creada correctamente", "success");
-      dispatch(uiCreateInvoicesLoading());
-      dispatch(uiCreateNewInvoices());
-      dispatch(restValuesState());
+      Swal.fire("Error!", `${data.data.message}`, "error");
     } catch (error) {
       dispatch(uiCreateInvoicesLoading());
       Swal.fire("Error!", "Oops.. para que algo no va bien", "error");

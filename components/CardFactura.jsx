@@ -18,6 +18,7 @@ const formatter = new Intl.NumberFormat("en-US", {
 
 export const CardFactura = ({ factura }) => {
   const { push } = useRouter();
+  console.log(factura);
 
   const handleDelete = (e) => {
     e.stopPropagation();
@@ -32,7 +33,12 @@ export const CardFactura = ({ factura }) => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          await mainApi.delete(`/invoices/${factura.id}`);
+          const data = await mainApi.delete(`/invoices/${factura.id}`);
+          if (data.data.ok === false) {
+            Swal.fire("Oops..", `${data.data.message}`, "error");
+            return;
+          }
+          console.log(data.data);
           Swal.fire("Deleted!", "Factura eliminada correctamente", "success");
         } catch (error) {
           Swal.fire("Oops..", "Ocurrio un error", "error");
